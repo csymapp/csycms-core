@@ -125,5 +125,5 @@
     "start_win": "set DEBUG=CSYCMS&&node example/server.js $*",
     "test": "npm run lint && mocha --reporter spec test/*.js $*"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
