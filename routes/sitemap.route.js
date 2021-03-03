@@ -1,57 +1,30 @@
 
 'use strict';
-
-// Modules
-var path                = require('path');
-var fs                  = require('fs');
-var sm                  = require('sitemap');
-var _                   = require('underscore');
+const path = require('path');
+const fs = require('fs-extra');
+const sm = require('sitemap');
+const _ = require('underscore');
 const contentProcessors = require('../functions/contentProcessors');
-const utils             = require('../core/utils');
+const utils = require('../core/utils');
 
-function route_sitemap (config) {
-  return function (req, res, next) {
-
-    var hostname = config.hostname || req.headers.host;
-    var content_dir = path.normalize(config.content_dir);
-
-    // get list md files
-    var files = listFiles(content_dir);
-    files = _.filter(files, function (file) {
-      let lowerFile = file.toLowerCase()
-      return file.substr(-3) === '.md' && ! file.includes('/csycmsdocs/public') && ! lowerFile.includes('readme.md') && !file.includes('.error.md');
-    });
-
-    // files = _.filter(files, function (file) {
-    //   file.substr(-3) === '.md' && ! file.includes('/csycmsdocs/public') && ! lowerFile.includes('readme.md')
-    //   return file.substr(-3) === '.md';
-    // });
-
-    var filesPath = files.map(function (file) {
-      return file.replace(content_dir, '');
-    });
-
-    // generate list urls
-    var urls = filesPath.map(function (file) {
-      console.log(file)
-      let tmp =  '/' + file.replace('.md', '').replace('\\', '/');
-      tmp = tmp.replace(/[0-9]*\./g,'')
-      tmp = tmp.replace(/\/chapter$/,'')
-      tmp = tmp.replace(/\/docs$/,'')
-      return tmp;
-    });
+function route_sitemap(csystem) {
+  let config = csystem.config
+  return (req, res, next) => {
+    let hostname = csystem.config.domain || req.headers.host;
+    let files = csystem.sortedFilesPaths.map(item => path.join(csystem.config.content_dir, item));
+    let urls = csystem.sortedUrls();
 
     // create sitemap.xml
-    var sitemap = sm.createSitemap({
-      hostname: 'http://' + hostname,
+    let sitemap = sm.createSitemap({
+      hostname: `${config.scheme}://${hostname}`,
       cacheTime: 600000
     });
 
-    for (var i = 0, len = urls.length; i < len; i++) {
-      var content = fs.readFileSync(files[i], 'utf8');
+    for (let i = 0, len = urls.length; i < len; i++) {
+      let content = fs.readFileSync(files[i], 'utf8');
       // Need to override the datetime format for sitemap
-      var conf = {
-        datetime_format : 'YYYY-MM-DD'
+      let conf = {
+        datetime_format: 'YYYY-MM-DD'
       };
       sitemap.add({
         url: (config.prefix_url || '') + urls[i],
@@ -66,14 +39,4 @@ function route_sitemap (config) {
 
   };
 }
-
-function listFiles (dir) {
-  return fs.readdirSync(dir).reduce(function (list, file) {
-    var name = path.join(dir, file);
-    var isDir = fs.statSync(name).isDirectory();
-    return list.concat(isDir ? listFiles(name) : [name]);
-  }, []);
-}
-
-// Exports
 module.exports = route_sitemap;

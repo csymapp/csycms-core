@@ -25,7 +25,9 @@
   },
 
   "error": {
-    "404": "Sorry. This page doesn't exist. You can click the back button to go back home"
+    "404": "Sorry. This page doesn't exist. You can click the back button to go back home.",
+    "405": "Method not allowed.",
+    "500": "Internal Server Error"
   },
 
   "edit": {

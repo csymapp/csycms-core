@@ -7,8 +7,7 @@ const path = require('path'),
   yaml = require('js-yaml'),
   yargs = require("yargs"),
   argv = yargs.argv,
-  appRoot = require('app-root-path'),
-  randomstring = require("randomstring");
+  appRoot = require('app-root-path')
 
 // Exports
 module.exports = function (site) {
@@ -18,14 +17,14 @@ module.exports = function (site) {
   yamlObject = contentProcessors.cleanObjectStrings(yamlObject);
 
   let config = {
-    site_space: '', // Your site title (format: page_title - site_title)
-    site_title: 'test site',
+    site_space: 'CSECO', // Your site title (format: page_title - site_title)
+    site_title: 'adventhymnal',
     search_scope: 'local',
-    base_url: '', // The base URL of your site (can use %base_url% in Markdown files)
+    base_url: 'http://localhost:4000/', // The base URL of your site (can use %base_url% in Markdown files)
     support_email: '', // Used for the "Get in touch" page footer link
     // Footer Text / Copyright
     copyright: 'Copyright &copy; 2018 - ' + new Date().getFullYear() + ' - <a href="http://www.gospelsounders.org">Gospel Sounders</a>',
-    github: false,
+    github: 'https://github.com/gospelsounders',
     facebook: false,
     youtube: false,
     telegram: false,
@@ -83,12 +82,12 @@ module.exports = function (site) {
     // Google OAuth
     googleoauth: false,
     oauth2: {
-      client_id: '',
-      client_secret: '',
-      callback: '',
+      client_id: '1cea90ac2661c6e3afa6',
+      client_secret: '91c780a5b6e34ff1be72130280f369ee914599ab',
+      callback: 'http://127.0.0.1:4000/login/callback',
       hostedDomain: 'google.com'
     },
-    secret: '',
+    secret: 'someCoolSecretRightHere',
 
     credentials: [{
         username: '',
@@ -129,7 +128,7 @@ module.exports = function (site) {
       // where is this site accessible?
       // same as that in .env
       ,
-    site: 'test' // site name in csycms (for identifying site folders)
+    site: 'adventhymnal' // site name in csycms (for identifying site folders)
 
   };
 
@@ -138,7 +137,5 @@ module.exports = function (site) {
 
   // remove trailing slash from config.base_url
   config.base_url = config.base_url.replace(/\/$/, "")
-  config.site = site
-  if(config.site_space ==='') config.site_space = randomstring.generate(7);;
   return config;
 }
