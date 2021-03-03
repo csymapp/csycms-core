@@ -1,2 +1,5 @@
 # csycms-core
-# csycms-core
+
+Used by [csycms](https://github.com/csymapp/csycms). Check [csycms](https://github.com/csymapp/csycms) for more details
+
+[![Build Status](https://travis-ci.com/csymapp/csycms-cli.svg?branch=master)](https://travis-ci.com/csymapp/automatic-updates)

@@ -1,28 +1,4 @@
 {
-  "_from": "csycms-core",
-  "_id": "csycms-core@1.0.0",
-  "_inBundle": false,
-  "_integrity": "sha512-rNiomtb+cFnKldA4ks0M+ffOes3hjzDsr+WhLbdvpXDqQ0hxC+1wFh1c+xrGpzSu1zxCkbn2qZhytOc9lbMZZg==",
-  "_location": "/csycms-core",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "csycms-core",
-    "name": "csycms-core",
-    "escapedName": "csycms-core",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/csycms-core/-/csycms-core-1.0.0.tgz",
-  "_shasum": "80b30703bf335635983b1f95b9284555ec04b9ea",
-  "_spec": "csycms-core",
-  "_where": "/home/brian/Code/CSECO/cmsTests/Raneto",
   "author": {
     "name": "Brian Onang'o",
     "email": "surgbc@gmail.com"
@@ -54,7 +30,7 @@
     "glob": "7.1.3",
     "highlightjs": "9.12.0",
     "hogan-express": "0.5.2",
-    "jquery": "3.4.0",
+    "jquery": "^3.6.0",
     "jquery-backstretch": "2.1.16",
     "js-yaml": "3.13.1",
     "lunr": "2.3.5",
@@ -90,7 +66,7 @@
     "underscore": "1.9.1",
     "underscore.string": "3.3.5",
     "validator": "10.9.0",
-    "yargs": "^12.0.5"
+    "yargs": "^16.2.0"
   },
   "deprecated": false,
   "description": "Markdown powered Knowledgebase",
@@ -105,8 +81,8 @@
     "eslint-plugin-standard": "4.0.0",
     "gulp": "4.0.0",
     "gulp-shell": "0.6.5",
-    "mocha": "5.2.0",
-    "pm2": "3.2.2",
+    "mocha": "^8.3.0",
+    "pm2": "^4.5.5",
     "supertest": "3.3.0"
   },
   "engines": {
@@ -145,8 +121,7 @@
     "gulp": "gulp",
     "lint": "eslint bin/* app/**/*.js example/**/*.js test/*.js gulpfile.js $*",
     "start": "DEBUG=CSYCMS node bin/app.js $*",
-    "start_win": "set DEBUG=CSYCMS&&node example/server.js $*",
-    "test": "npm run lint && mocha --reporter spec test/*.js $*"
+    "test": "mocha"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
