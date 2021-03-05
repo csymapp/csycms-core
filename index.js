@@ -9,7 +9,8 @@ const cookie_parser = require('cookie-parser')
 const body_parser = require('body-parser')
 const moment = require('moment')
 const hogan = require('hogan-express')
-const session = require('express-session')
+const session = require('express-session');
+const chalk = require('chalk');
 //const passport = require('passport')
 //const GitHubStrategy = require('passport-github').Strategy
 // const dotenv = require('dotenv')
@@ -22,6 +23,8 @@ const appRoot = require('app-root-path')
 // const site = argv.SITE || process.env.SITE
 
 function initialize(config) {
+  // console.log(config);
+  // process.exit();
   // console.log(config);
   // dotenv.config()
   // Load Translations
@@ -73,6 +76,15 @@ function initialize(config) {
     path.join(config.themes_dir, config.theme_name, 'templates'),
     path.join(config.themes_dir, 'default', 'templates'),
   ]);
+  console.log(config.directory)
+  console.log(config.directory)
+  console.log(config.directory)
+  console.log(config.directory)
+  console.log(config.directory);
+
+  const csycmsApi = require(path.join(config.directory, 'api'));
+  console.log('------------------');
+  console.log(csycmsApi)
   // leave it here...
   // app.set('view options', {
   //   layout: false
@@ -175,14 +187,55 @@ function initialize(config) {
   //   router.get(/^([^.]*)/, route_wildcard);
   // }
 
-  console.log(router)
+  // console.log(router)
   router.get('/sitemap.xml', route_sitemap);
   router.get('/sitemap', route_sitemap);
   router.get('/robots.txt', route_robots_txt);
 
   router.get('/robots.txt', route_robots_txt);
 
-  router.get('/auth/:v1?/:v2?/:v3?/:v4?/:v5?/:v6?/:v7?/:v8?/:v9?/', route_auth);
+  // router.get('/auth/:v1?/:v2?/:v3?/:v4?/:v5?/:v6?/:v7?/:v8?/:v9?/', route_auth);
+  {
+    let routes = {};
+    console.log("Loading routes...")
+  
+      /*
+     * read all folders in ../routes
+     * 		go to their models folders and load all the models
+     */
+    console.log('====================')
+    console.log('====================')
+    console.log(csycmsApi.routesDir())
+    console.log('====================')
+    let routesDir = csycmsApi.routesDir()
+    fse
+    // .readdirSync(__dirname+"/../routes")
+    .readdirSync(routesDir)
+    .forEach((folda)=>{
+      let routeFilePath = path.join(routesDir, folda)
+      fse
+      .readdirSync(routeFilePath)
+      .filter((file) =>
+        // all js files in folder
+        file.split(".")[file.split(".").length-1] === "js", console.log('=============>>>>>>>>>>>>>?????==')
+      )
+      // .filter((file) =>
+      //   // all js files in folder
+      //   console.log('===============')
+      // )
+      .forEach((file)=>{
+        console.log(file)
+        let routename = file.split(".")[0];
+              console.log("%s %s %s", chalk.green('✓'), chalk.green('✓'), routename);	
+              routeFilePath = path.join(routeFilePath, file);
+              routes[routename] = routeFilePath;
+              console.log(routeFilePath)
+              new (require(routeFilePath)) (app, config)
+      })
+      
+      
+    })
+  }
 
   // router.get('/', function (req, res, next) {
   //   next('unknown error')
@@ -191,8 +244,8 @@ function initialize(config) {
 
   // Handle Errors
   // app.use(error_handler);
-  console.log('error_handler')
-  console.log(error_handler)
+  // console.log('error_handler')
+  // console.log(error_handler)
   app.use(config.prefix_url || '/', router);
 
   app.get('*', (req, res, next) => {
