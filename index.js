@@ -16,7 +16,8 @@ const chalk = require('chalk');
 // const dotenv = require('dotenv')
 const fse = require('fs-extra')
 const Csystem = require(__dirname + '/core/csystem')
-const appRoot = require('app-root-path')
+const appRoot = require('app-root-path');
+const swaggerUi = require('swagger-ui-express');
 // const base_dir = appRoot.path
 // const yargs = require("yargs")
 // const argv = yargs.argv
@@ -206,7 +207,18 @@ function initialize(config) {
     console.log('====================')
     console.log('====================')
     console.log(csycmsApi.routesDir())
+    const swaggerDocument = require(`${csycmsApi.swaggerDir()}/swaggerDocument.js`);
+    console.log(swaggerDocument)
+    console.log(csycmsApi.swaggerData())
     console.log('====================')
+    console.log(config)
+    let siteName = config.directory.split('/').slice(-1)[0];
+    swaggerDocument.info.title = `${siteName} ${swaggerDocument.info.title}`
+    swaggerDocument.info.contact.email = config.contacts.support_email.length > 1?config.contacts.support_email:swaggerDocument.info.contact.email;
+    swaggerDocument.info.contact.email = `${swaggerDocument.info.contact.email}?subject=${swaggerDocument.info.title}`
+    swaggerDocument.info.contact.url = `${config.scheme}://${config.domain}`
+    console.log(swaggerDocument)
+    app.use('/swagger-ui.html', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     let routesDir = csycmsApi.routesDir()
     fse
     // .readdirSync(__dirname+"/../routes")
