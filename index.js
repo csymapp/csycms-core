@@ -38,7 +38,7 @@ function initialize(config) {
   const csystem = new Csystem(config)
 
   const route_sitemap = require('./routes/sitemap.route.js')(csystem);
-  const route_auth = require('./routes/auth/auth.js')(csystem);
+  // const route_auth = require('./routes/auth/auth.js')(csystem);
   const route_robots_txt = require('./routes/robots.txt.route.js')(csystem);
   const error_handler = require('./middleware/error_handler.js')(csystem);
 
@@ -54,7 +54,7 @@ function initialize(config) {
   // var route_category_create = require('./routes/category.create.route.js')(csystem);
   // var route_search = require('./routes/search.route.js')(csystem);
   // var route_home = require('./routes/home.route.js')(csystem);
-  // var route_wildcard = require('./routes/wildcard.route.js')(csystem);
+  var route_wildcard = require('./routes/wildcard.route.js')(csystem);
   // var route_robots_txt = require('./routes/robots.txt.route.js')(csystem);
   // var route_login = require('./routes/login.route.js')(csystem);//(config, pageList, route_wildcard);
   // var route_login_page = require('./routes/login_page.route.js')(csystem);
@@ -132,7 +132,6 @@ function initialize(config) {
   }
 
   // router.use(config.image_url, express.static(path.normalize(config.content_dir + config.image_url)));
-  router.use('/translations', express.static(path.normalize(__dirname + '/translations')));
 
   // // HTTP Authentication
   // if (config.authentication === true || config.authentication_for_edit || config.authentication_for_read) {
@@ -189,65 +188,88 @@ function initialize(config) {
   // }
 
   // console.log(router)
+  
   router.get('/sitemap.xml', route_sitemap);
   router.get('/sitemap', route_sitemap);
+  // router.get('/robots.txt', route_robots_txt);
   router.get('/robots.txt', route_robots_txt);
 
-  router.get('/robots.txt', route_robots_txt);
 
+  // app.use(/^\/translations([^.]*)/, express.static(path.normalize(__dirname + '/translations')));
+  app.use(/^\/translations([^.]*)/, (req, res, next)=>{res.json({})})//route_sitemap/*express.static(path.normalize(__dirname + '/translations'))*/);
+  app.use('/sitemap.xml', route_sitemap);
+  app.use('/sitemap', route_sitemap);
+  // router.get('/robots.txt', route_robots_txt);
+  app.use('/robots.txt', route_robots_txt);
+
+  
   // router.get('/auth/:v1?/:v2?/:v3?/:v4?/:v5?/:v6?/:v7?/:v8?/:v9?/', route_auth);
   {
     let routes = {};
-    console.log("Loading routes...")
-  
-      /*
-     * read all folders in ../routes
-     * 		go to their models folders and load all the models
-     */
-    console.log('====================')
-    console.log('====================')
-    console.log(csycmsApi.routesDir())
-    const swaggerDocument = require(`${csycmsApi.swaggerDir()}/swaggerDocument.js`);
-    console.log(swaggerDocument)
-    console.log(csycmsApi.swaggerData())
-    console.log('====================')
-    console.log(config)
+    // console.log("Loading routes...")
+
+    /*
+   * read all folders in ../routes
+   * 		go to their models folders and load all the models
+   */
+    // console.log('====================')
+    // console.log('====================')
+    // console.log(csycmsApi.routesDir())
+    const swaggerDocument = require(`${csycmsApi.swaggerDir()}/swaggerDocument.js`)(config);
+    // console.log(swaggerDocument)
+    // console.log(csycmsApi.swaggerData())
+    // console.log('====================')
+    // console.log(config)
+    console.log('----------------------')
+    console.log('----------------------')
+    console.log('----------------------')
+    console.log('----------------------')
+    
     let siteName = config.directory.split('/').slice(-1)[0];
-    swaggerDocument.info.title = `${siteName} ${swaggerDocument.info.title}`
-    swaggerDocument.info.contact.email = config.contacts.support_email.length > 1?config.contacts.support_email:swaggerDocument.info.contact.email;
+    swaggerDocument.info.title = `${config.site.title || siteName} ${swaggerDocument.info.title}`
+    swaggerDocument.info.contact.email = config.contacts.support_email.length > 1 ? config.contacts.support_email : swaggerDocument.info.contact.email;
     swaggerDocument.info.contact.email = `${swaggerDocument.info.contact.email}?subject=${swaggerDocument.info.title}`
-    swaggerDocument.info.contact.url = `${config.scheme}://${config.domain}`
-    console.log(swaggerDocument)
+    // swaggerDocument.info.contact.url = `${config.scheme}://${config.domain}`
+    // console.log(swaggerDocument);process.exit();
     app.use('/swagger-ui.html', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    /**
+     * Anything that is not /api
+     * must come after all other paths
+     * Ref: https://stackoverflow.com/questions/899422/regular-expression-for-a-string-that-does-not-start-with-a-sequence
+     */
+    app.use(/^(?!\/api)([^.]*)/, route_wildcard);
+    
     let routesDir = csycmsApi.routesDir()
     fse
-    // .readdirSync(__dirname+"/../routes")
-    .readdirSync(routesDir)
-    .forEach((folda)=>{
-      let routeFilePath = path.join(routesDir, folda)
-      fse
-      .readdirSync(routeFilePath)
-      .filter((file) =>
-        // all js files in folder
-        file.split(".")[file.split(".").length-1] === "js", console.log('=============>>>>>>>>>>>>>?????==')
-      )
-      // .filter((file) =>
-      //   // all js files in folder
-      //   console.log('===============')
-      // )
-      .forEach((file)=>{
-        console.log(file)
-        let routename = file.split(".")[0];
-              console.log("%s %s %s", chalk.green('✓'), chalk.green('✓'), routename);	
-              routeFilePath = path.join(routeFilePath, file);
-              routes[routename] = routeFilePath;
-              console.log(routeFilePath)
-              new (require(routeFilePath)) (app, config)
+      // .readdirSync(__dirname+"/../routes")
+      .readdirSync(routesDir)
+      .forEach((folda) => {
+        let routeFilePath = path.join(routesDir, folda)
+        fse
+          .readdirSync(routeFilePath)
+          .filter((file) =>
+            // all js files in folder
+            file.split(".")[file.split(".").length - 1] === "js"//, console.log('=============>>>>>>>>>>>>>?????==')
+          )
+          // .filter((file) =>
+          //   // all js files in folder
+          //   console.log('===============')
+          // )
+          .forEach((file) => {
+            console.log(routeFilePath, file)
+            let routename = file.split(".")[0];
+            console.log("%s %s %s", chalk.green('✓'), chalk.green('✓'), routename);
+            routeFilePath = path.join(routeFilePath, file);
+            routes[routename] = routeFilePath;
+            console.log(routeFilePath)
+            new (require(routeFilePath))(app, config)
+          })
+
+
       })
-      
-      
-    })
   }
+  // app.use(/^([^.]*)/, route_wildcard);
+  // router.get(/^([^.]*)/, route_wildcard);
 
   // router.get('/', function (req, res, next) {
   //   next('unknown error')

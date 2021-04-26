@@ -66,6 +66,11 @@ class Csystem {
         let content_dir = path.join(this.config.directory, 'content')
         let csycmsdocsDir = path.join(this.config.directory, 'content', 'csycmsdocs')
         let files = this.listFiles(content_dir).sort();
+        /**
+         * ['/var/www/html/csycms/SITE1/content/01.basics/01.what-is-csycms/docs.md',
+         * '/var/www/html/csycms/SITE1/content/01.basics/02.Requirements/docs.md',..]
+         */
+
         files = _.filter(files, (file) => {
             // remove csycmsdocs if documentation is disabled.
             let allowCsycmsDocs = this.config.documentation
@@ -74,8 +79,18 @@ class Csystem {
 
         let sortedFilesPaths = files.map(file => file.replace(content_dir, '').replace(/docs\.md$/, `00.docs`).replace(/chapter\.md$/, `00.chapter`)).sort();
         sortedFilesPaths = sortedFilesPaths.map(file => file.replace(/00.docs$/, 'docs.md').replace(/00.chapter$/, 'chapter.md'))
+        /** sorted file paths */
+        this.sortedFilesPaths = [...sortedFilesPaths];
+
+        let sortedFilesPathsNoLeadingSlashNorNumber = this.pathsNoLeadingSlashNorNumber()
+        this.sortedFilesPathsNoLeadingSlashNorNumber = [...sortedFilesPathsNoLeadingSlashNorNumber]
+        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
+        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
+        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
+        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
+        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
         console.log(sortedFilesPaths)
-        this.sortedFilesPaths = [...sortedFilesPaths]
+        console.log(sortedFilesPathsNoLeadingSlashNorNumber)
 
         return
         // let sortedFilesPathsNoLeadingSlashNorNumber = this.pathsNoLeadingSlashNorNumber()
@@ -225,7 +240,6 @@ class Csystem {
             console.log(pageListWithTitle)
         }
 
-
         for (let i in pageListWithTitle) {
             let filePath = pageListWithTitle[i].path
             let parts = filePath.split('.')
@@ -293,8 +307,6 @@ class Csystem {
                         }
                         if (pathinner !== '/')
                             pageListWithTitleInner.push(itemInner)
-
-
                     }
                     // chapters[chapterNum].files = self.build_nested_pages_inner(pageListWithTitleInner, level+1, '/01.environment/docs.md' === filePath?true:false).slice(1)
                     chapters[chapterNum].files = self.build_nested_pages_inner(pageListWithTitleInner, level + 1, false).slice(1)
