@@ -84,12 +84,6 @@ class Csystem {
 
         let sortedFilesPathsNoLeadingSlashNorNumber = this.pathsNoLeadingSlashNorNumber()
         this.sortedFilesPathsNoLeadingSlashNorNumber = [...sortedFilesPathsNoLeadingSlashNorNumber]
-        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
-        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
-        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
-        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
-        console.log('AAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB')
-        console.log(sortedFilesPaths)
         console.log(sortedFilesPathsNoLeadingSlashNorNumber)
 
         return

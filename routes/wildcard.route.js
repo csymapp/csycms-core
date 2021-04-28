@@ -56,21 +56,11 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
   // console.log('------------', reffilePaths)
 
   return function (req, res, next) {
-    console.log('INSIDE WILDCARD')
-    console.log('INSIDE WILDCARD')
-    console.log('INSIDE WILDCARD')
-    console.log('INSIDE WILDCARD')
-    console.log('INSIDE WILDCARD')
-    console.log('INSIDE WILDCARD')
     /** which is our file? */
     try {
       if (!req.session) req.session = {}
       // Skip if nothing matched the wildcard Regex
       if (!req.params[0]) {
-        console.log('HHHHHHHHHHHHHHHHHHHHHHH')
-        console.log('HHHHHHHHHHHHHHHHHHHHHHH')
-        console.log('HHHHHHHHHHHHHHHHHHHHHHH')
-        console.log('HHHHHHHHHHHHHHHHHHHHHHH')
         return next();
       }
 
@@ -91,16 +81,16 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       })
       if (rqPathWithoutLeadingSlash === '') pathIndex = 0;
       if (pathIndex < 0) {
-        console.log('qqqqqqqqqqqqqqq')
-        console.log('qqqqqqqqqqqqqqq')
-        console.log('qqqqqqqqqqqqqqq')
-        console.log(req.path)
-        console.log(req.params)
-        console.log('qqqqqqqqqqqqqqq')
+       // console.log('qqqqqqqqqqqqqqq')
+       // console.log('qqqqqqqqqqqqqqq')
+       // console.log('qqqqqqqqqqqqqqq')
+       // console.log(req.path)
+       // console.log(req.params)
+       // console.log('qqqqqqqqqqqqqqq')
         return next();
       }
       slug = urls[pathIndex]
-      console.log('==============>', { pathIndex, slug, path: req.path, params: req.params, query: req.query })
+     // console.log('==============>', { pathIndex, slug, path: req.path, params: req.params, query: req.query })
 
       /** add navigation for next and previous */
       let navSlugs = {}
@@ -114,11 +104,11 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         }
         // else navSlugs = {prev:filePaths[pathIndex-1], next:encodeURI(filePaths[pathIndex+1])}
         else{
-          console.log('setting NEXT')
-          console.log('setting NEXT')
-          console.log('setting NEXT')
-          console.log('setting NEXT')
-          console.log('setting NEXT', urls)
+         // console.log('setting NEXT')
+         // console.log('setting NEXT')
+         // console.log('setting NEXT')
+         // console.log('setting NEXT')
+         // console.log('setting NEXT', urls)
          navSlugs = {
          
           prev: encodeURI('/'+urls[pathIndex - 1]),
@@ -142,9 +132,9 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         delete navSlugs.prev
         // }
       }
-      console.log({ navSlugs })
+     // console.log({ navSlugs })
 
-      console.log({ preMeta })
+     // console.log({ preMeta })
 
       // try {
       //   let originalFilePaths = reffilePaths["original"]
@@ -168,28 +158,28 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
       // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
 
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
 
       // if(pathIndex === 0) navSlugs = {next:encodeURI(filePaths[pathIndex+1])}
 
 
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
+     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
 
       // console.log(files)
       /** check different functions for processing error pages... */
       let file_path = files[pathIndex] //  ||  path.normalize(config.content_dir + slug);;
       // let file_path = path.normalize(config.content_dir + slug);
-      console.log(file_path)
+     // console.log(file_path)
 
       /** No idea at all now why these lines 
       file_path = file_path.replace(/\/00\./g, '/')
@@ -198,7 +188,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         file_path = file_path.slice(0, -suffix.length - 1);
       }
       */
-      console.log(slug)
+     // console.log(slug)
       let content;
       let meta = { metadata: {} }
       try {
@@ -209,7 +199,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         if (!meta.title) {
           meta.title = contentProcessors.slugToTitle(file_path);
         }
-        console.log(meta)
+       // console.log(meta)
         content = contentProcessors.stripMeta(content);
         content = contentProcessors.processVars(content, config);
       } catch (error) { }
@@ -243,17 +233,17 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       // 
 
 
-      console.log('------------=================--------')
-      console.log('------------=================--------')
-      console.log('------------=================--------')
-      console.log('------------=================--------')
-      console.log('------------=================--------')
-      console.log('------------=================--------')
-      console.log('------------=================--------')
-      console.log('------------=================--------')
-      console.log(content)
-      console.log(render)
-      console.log(config.site)
+     // console.log('------------=================--------')
+     // console.log('------------=================--------')
+     // console.log('------------=================--------')
+     // console.log('------------=================--------')
+     // console.log('------------=================--------')
+     // console.log('------------=================--------')
+     // console.log('------------=================--------')
+     // console.log('------------=================--------')
+     // console.log(content)
+     // console.log(render)
+     // console.log(config.site)
       let layout, theme = config.theme_name
       if (meta.theme) theme = meta.theme
       // if(meta.page)
@@ -300,12 +290,12 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
 
       // console.log(slug)
       // console.log(retpageList)
-      console.log('----------------------------->>>>>>>>>>>>>>>>>>>>>>>')
-      console.log('----------------------------->>>>>>>>>>>>>>>>>>>>>>>')
-      console.log('----------------------------->>>>>>>>>>>>>>>>>>>>>>>')
-      console.log('----------------------------->>>>>>>>>>>>>>>>>>>>>>>')
-      console.log(theme)
-      console.log(meta)
+     // console.log('----------------------------->>>>>>>>>>>>>>>>>>>>>>>')
+     // console.log('----------------------------->>>>>>>>>>>>>>>>>>>>>>>')
+     // console.log('----------------------------->>>>>>>>>>>>>>>>>>>>>>>')
+     // console.log('----------------------------->>>>>>>>>>>>>>>>>>>>>>>')
+     // console.log(theme)
+     // console.log(meta)
       // console.log(config)
 
       const getTitle = (slug) => {
@@ -361,7 +351,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       }
 
       let breadCrumbs = createBreadCrumbs(slug, urls)
-      console.log(breadCrumbs)
+     // console.log(breadCrumbs)
       // console.log(breadCrumbs)
       /**
        * The res.render() function is used to render a view and sends the rendered HTML string to the client.
@@ -645,13 +635,13 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
 
       });
     } catch (error) {
-      console.log('WILDCARD ERROR....')
-      console.log('WILDCARD ERROR....')
-      console.log('WILDCARD ERROR....')
-      console.log('WILDCARD ERROR....')
-      console.log('WILDCARD ERROR....')
-      console.log('WILDCARD ERROR....')
-      console.log(error)
+     // console.log('WILDCARD ERROR....')
+     // console.log('WILDCARD ERROR....')
+     // console.log('WILDCARD ERROR....')
+     // console.log('WILDCARD ERROR....')
+     // console.log('WILDCARD ERROR....')
+     // console.log('WILDCARD ERROR....')
+     // console.log(error)
     }
 
   };

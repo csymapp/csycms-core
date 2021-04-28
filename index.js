@@ -220,17 +220,22 @@ function initialize(config) {
     // console.log(csycmsApi.swaggerData())
     // console.log('====================')
     // console.log(config)
-    console.log('----------------------')
-    console.log('----------------------')
-    console.log('----------------------')
-    console.log('----------------------')
+    // console.log('----------------------')
+    // console.log('----------------------')
+    // console.log('----------------------')
+    // console.log('----------------------')
     
     let siteName = config.directory.split('/').slice(-1)[0];
+    try{
+      swaggerDocument.servers = []
+      config.siteapi.servers.map(server=>swaggerDocument.servers.push({url:server}))
+    }catch(error){}
     swaggerDocument.info.title = `${config.site.title || siteName} ${swaggerDocument.info.title}`
     swaggerDocument.info.contact.email = config.contacts.support_email.length > 1 ? config.contacts.support_email : swaggerDocument.info.contact.email;
     swaggerDocument.info.contact.email = `${swaggerDocument.info.contact.email}?subject=${swaggerDocument.info.title}`
     // swaggerDocument.info.contact.url = `${config.scheme}://${config.domain}`
     // console.log(swaggerDocument);process.exit();
+    // console.log(swaggerDocument)
     app.use('/swagger-ui.html', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     /**
      * Anything that is not /api
