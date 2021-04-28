@@ -126,5 +126,5 @@
     "start": "DEBUG=CSYCMS node bin/app.js $*",
     "test": "mocha"
   },
-  "version": "1.0.3"
+  "version": "1.0.4"
 }
