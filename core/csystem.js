@@ -84,66 +84,9 @@ class Csystem {
 
         let sortedFilesPathsNoLeadingSlashNorNumber = this.pathsNoLeadingSlashNorNumber()
         this.sortedFilesPathsNoLeadingSlashNorNumber = [...sortedFilesPathsNoLeadingSlashNorNumber]
-        console.log(sortedFilesPathsNoLeadingSlashNorNumber)
+        // console.log(sortedFilesPathsNoLeadingSlashNorNumber)
 
         return
-        // let sortedFilesPathsNoLeadingSlashNorNumber = this.pathsNoLeadingSlashNorNumber()
-        // this.sortedFilesPathsNoLeadingSlashNorNumber = [...sortedFilesPathsNoLeadingSlashNorNumber]
-        // let sortedUrls = sortedFilesPathsNoLeadingSlashNorNumber.map(file => file.replace(/\.md$/, '').replace(/\/chapter/, '').replace(/\/docs/, ''))
-        let sortedUrls = this.sortedUrls();
-
-        console.log(sortedUrls)
-
-        // let nestedUrls = this.listToTree(sortedUrls)
-        let nestedUrls = this.nestedUrls();
-        // nestedUrls = nestedUrls[0].children[0].children;
-        console.log(nestedUrls)
-        process.exit();
-
-        let urls = filesPath.map(file => file.replace(/docs\.md$/, `00.docs`).replace(/chapter\.md$/, `00.chapter`).replace(/\.md/, '')).sort();
-        // urls.sort();
-        let originalUrls = urls.map(function (file) {
-            file = file.replace('.md', '').replace('\\', '/');
-            return file + '.md'
-        });
-        // originalUrls.sort();
-        // original - actualFilePaths, sorted...
-        console.log(urls)
-        console.log(originalUrls)
-        process.exit();
-        urls = urls.map(function (file) {
-            file = file.replace('/00.docs', '').replace('/00.chapter', '')
-            return file
-        });
-        originalUrls = originalUrls.map(function (file) {
-            file = file.replace('/00.docs.md', '/docs.md')
-            return file
-        });
-
-
-        for (let i in urls) urls[i] = urls[i].replace(/\/[0-9]+\./g, '/').replace(/^[0-9]+\./g, '')
-
-        let nestedPages = self.build_nested_pages(originalUrls, urls, content_dir)
-        let siteSpace = config.site_space
-        let dir = 'config/sites-enabled'
-
-        let otherSites = fse.readdirSync(dir).reduce(function (list, file) { // work this later...
-            var name = path.join(dir, file);
-            var isDir = fse.statSync(name).isDirectory();
-            return list.concat(isDir ? self.listFiles(name) : [name]);    // work on this...
-        }, []).reduce((accumulator, currentValue, currentIndex, originalPageListArray) => {
-            let config_file = path.join(base_url, currentValue)
-            config_file = currentValue.split('.')
-            config_file.pop();
-            config_file = config_file.join('.')
-            config_file = config_file.split('/').pop()
-            let iConfig = require('../functions/config')(config_file)
-                // let iConfig = require(config_file)(rootPath)
-                , content_dir = path.join(iConfig.content_dir, iConfig.site)
-            siteSpace === iConfig.site_space ? accumulator.push({ domain: iConfig.base_url, content_dir, config_file }) : false;
-            return accumulator
-        }, [])
-        return { original: originalUrls, modified: urls, nestedPages, otherSites }
     }
 
     /**

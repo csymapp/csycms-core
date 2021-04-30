@@ -231,8 +231,9 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
 
      let layout, theme = config.theme_name, renderRoot = ''
       if (meta.theme) {
-        if(typeof meta.theme ===' string'){ // system theme
+        if(typeof meta.theme === 'string'){ // system theme
           theme = meta.theme
+          renderRoot = `${theme}/templates`
         }else{
           try{
             if(meta.theme.system){
@@ -247,6 +248,9 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         theme = meta.theme
       }
       layout = 'layout'
+      if (meta.theme) {
+          layout = meta.layout
+      }
       // render = 'render'
 
       if (meta.redirect) {
@@ -325,7 +329,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       /**
        * The res.render() function is used to render a view and sends the rendered HTML string to the client.
        */
-      return res.status(meta.response_code).render(`${renderRoot}/${render}`, {
+      return res.status(meta.response_code).render(`${renderRoot}${renderRoot!==''?'/':''}${render}`, {
         config: config,
         pages: {},
         meta: meta,

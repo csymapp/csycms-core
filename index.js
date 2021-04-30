@@ -36,7 +36,7 @@ function initialize(config) {
     config.lang = require('./translations/' + config.locale + '.json');
   }
   const csystem = new Csystem(config)
-
+ 
   const route_sitemap = require('./routes/sitemap.route.js')(csystem);
   // const route_auth = require('./routes/auth/auth.js')(csystem);
   const route_robots_txt = require('./routes/robots.txt.route.js')(csystem);
@@ -262,7 +262,7 @@ function initialize(config) {
             console.log("%s %s %s", chalk.green('✓'), chalk.green('✓'), routename);
             routeFilePath = path.join(routeFilePath, file);
             routes[routename] = routeFilePath;
-            console.log(routeFilePath)
+            // console.log(routeFilePath)
             new (require(routeFilePath))(app, config)
           })
 

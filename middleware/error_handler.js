@@ -8,7 +8,6 @@
  */
 function handler(csystem) {
   return function (err, req, res, next) {
-    console.log(err)
     let status = err.code || 500;
     let msg = err.msg || err.message || err || 'unknown error'
 
