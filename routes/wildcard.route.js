@@ -324,11 +324,16 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       }
 
       let breadCrumbs = createBreadCrumbs(slug, urls)
-     // console.log(breadCrumbs)
+      layout = `${renderRoot}${renderRoot!==''?'/':''}${layout}`,
+     console.log("...", renderRoot, render, layout)
+     console.log(renderRoot, render, layout)
+     console.log(renderRoot, render, layout)
       // console.log(breadCrumbs)
       /**
        * The res.render() function is used to render a view and sends the rendered HTML string to the client.
        */
+      let hostname = csystem.config.domain || req.headers.host;
+      let url = `${config.scheme}://${hostname}/${req.path}`
       return res.status(meta.response_code).render(`${renderRoot}${renderRoot!==''?'/':''}${render}`, {
         config: config,
         pages: {},
@@ -354,7 +359,9 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         //   isEnd: false
         // },
         Toc: toc,
+        // layout: `${renderRoot}${renderRoot!==''?'/':''}${layout}`,
         layout,
+        url,
         auth: req.auth ? JSON.stringify(req.auth) : ''
       });
 

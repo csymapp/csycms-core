@@ -73,10 +73,10 @@ function initialize(config) {
   // }
   app.set('views', [
     path.join(config.directory, 'templates'), /** enable local theme */
-    path.join(config.directory, 'templates', config.theme_name),
-    path.join(config.directory, 'templates', 'default'),
     path.join(config.themes_dir), /** enable system theme from markdown*/
+    path.join(config.directory, 'templates', config.theme_name),
     path.join(config.themes_dir, config.theme_name, 'templates'),
+    path.join(config.directory, 'templates', 'default'),
     path.join(config.themes_dir, 'default', 'templates'),
   ]);
 
