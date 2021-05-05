@@ -126,7 +126,7 @@ function initialize(config) {
   if (config.theme_name !== 'default') {
     app.use(express.static(path.join(config.themes_dir, "default", "public")))
   }
-
+  app.use(express.static(path.join(config.themes_dir)))
   // router.use(config.image_url, express.static(path.normalize(config.content_dir + config.image_url)));
 
   // // HTTP Authentication
