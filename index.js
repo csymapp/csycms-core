@@ -18,6 +18,7 @@ const fse = require('fs-extra')
 const Csystem = require(__dirname + '/core/csystem')
 const appRoot = require('app-root-path');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors')
 // const base_dir = appRoot.path
 // const yargs = require("yargs")
 // const argv = yargs.argv
@@ -36,7 +37,7 @@ function initialize(config) {
     config.lang = require('./translations/' + config.locale + '.json');
   }
   const csystem = new Csystem(config)
- 
+
   const route_sitemap = require('./routes/sitemap.route.js')(csystem);
   // const route_auth = require('./routes/auth/auth.js')(csystem);
   const route_robots_txt = require('./routes/robots.txt.route.js')(csystem);
@@ -115,6 +116,9 @@ function initialize(config) {
   //     app.use(favicon(path.join(config.public_dir, '/icon.png')));
   // }
   // app.use(favicon(path.join(__dirname, '..', 'public', '/icon.png')));   # 
+
+
+  app.use(cors())
   app.use(logger('dev'));
   app.use(body_parser.json());
   app.use(body_parser.urlencoded({
@@ -184,7 +188,7 @@ function initialize(config) {
   // }
 
   // console.log(router)
-  
+
   router.get('/sitemap.xml', route_sitemap);
   router.get('/sitemap', route_sitemap);
   // router.get('/robots.txt', route_robots_txt);
@@ -192,13 +196,13 @@ function initialize(config) {
 
 
   // app.use(/^\/translations([^.]*)/, express.static(path.normalize(__dirname + '/translations')));
-  app.use(/^\/translations([^.]*)/, (req, res, next)=>{res.json({})})//route_sitemap/*express.static(path.normalize(__dirname + '/translations'))*/);
+  app.use(/^\/translations([^.]*)/, (req, res, next) => { res.json({}) })//route_sitemap/*express.static(path.normalize(__dirname + '/translations'))*/);
   app.use('/sitemap.xml', route_sitemap);
   app.use('/sitemap', route_sitemap);
   // router.get('/robots.txt', route_robots_txt);
   app.use('/robots.txt', route_robots_txt);
 
-  
+
   // router.get('/auth/:v1?/:v2?/:v3?/:v4?/:v5?/:v6?/:v7?/:v8?/:v9?/', route_auth);
   {
     let routes = {};
@@ -220,12 +224,12 @@ function initialize(config) {
     // console.log('----------------------')
     // console.log('----------------------')
     // console.log('----------------------')
-    
+
     let siteName = config.directory.split('/').slice(-1)[0];
-    try{
+    try {
       swaggerDocument.servers = []
-      config.siteapi.servers.map(server=>swaggerDocument.servers.push({url:server}))
-    }catch(error){}
+      config.siteapi.servers.map(server => swaggerDocument.servers.push({ url: server }))
+    } catch (error) { }
     swaggerDocument.info.title = `${config.site.title || siteName} ${swaggerDocument.info.title}`
     swaggerDocument.info.contact.email = config.contacts.support_email.length > 1 ? config.contacts.support_email : swaggerDocument.info.contact.email;
     swaggerDocument.info.contact.email = `${swaggerDocument.info.contact.email}?subject=${swaggerDocument.info.title}`
@@ -239,7 +243,7 @@ function initialize(config) {
      * Ref: https://stackoverflow.com/questions/899422/regular-expression-for-a-string-that-does-not-start-with-a-sequence
      */
     app.use(/^(?!\/api)([^.]*)/, route_wildcard);
-    
+
     let routesDir = csycmsApi.routesDir()
     fse
       // .readdirSync(__dirname+"/../routes")
