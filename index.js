@@ -233,6 +233,11 @@ function initialize(config) {
     swaggerDocument.info.title = `${config.site.title || siteName} ${swaggerDocument.info.title}`
     swaggerDocument.info.contact.email = config.contacts.support_email.length > 1 ? config.contacts.support_email : swaggerDocument.info.contact.email;
     swaggerDocument.info.contact.email = `${swaggerDocument.info.contact.email}?subject=${swaggerDocument.info.title}`
+    swaggerDocument.tags = swaggerDocument.tags.sort((a, b) => {
+      if (a.name < b.name) return -1
+      if (a.name > b.name) return 1
+      return 0
+    })
     // swaggerDocument.info.contact.url = `${config.scheme}://${config.domain}`
     // console.log(swaggerDocument);process.exit();
     // console.log(swaggerDocument)
