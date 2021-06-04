@@ -107,7 +107,6 @@
     "node",
     "nodejs"
   ],
-  "license": "Apache2",
   "licenses": [
     {
       "type": "Apache-2.0",
