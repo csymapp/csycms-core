@@ -67,7 +67,7 @@
     "sitemap": "2.1.0",
     "swagger-ui-express": "^4.1.6",
     "sweetalert2": "7.29.1",
-    "underscore": "1.9.1",
+    "underscore": "^1.13.1",
     "underscore.string": "3.3.5",
     "validator": "10.9.0",
     "yargs": "^16.2.0"
