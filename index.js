@@ -201,7 +201,7 @@ function initialize(config) {
   app.use('/sitemap', route_sitemap);
   // router.get('/robots.txt', route_robots_txt);
   app.use('/robots.txt', route_robots_txt);
-
+  app.enable('trust proxy');
 
   // router.get('/auth/:v1?/:v2?/:v3?/:v4?/:v5?/:v6?/:v7?/:v8?/:v9?/', route_auth);
   {
