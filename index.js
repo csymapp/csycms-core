@@ -19,6 +19,7 @@ const Csystem = require(__dirname + '/core/csystem')
 const appRoot = require('app-root-path');
 const swaggerUi = require('swagger-ui-express');
 const cors = require('cors')
+const  useragent = require('express-useragent');
 // const base_dir = appRoot.path
 // const yargs = require("yargs")
 // const argv = yargs.argv
@@ -119,6 +120,7 @@ function initialize(config) {
 
 
   app.use(cors())
+  app.use(useragent.express());
   app.use(logger('dev'));
   app.use(body_parser.json());
   app.use(body_parser.urlencoded({
