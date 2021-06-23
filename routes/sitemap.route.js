@@ -20,12 +20,13 @@ function route_sitemap(csystem) {
       cacheTime: 600000
     });
 
+    let conf = {
+      datetime_format: 'YYYY-MM-DD'
+    };
+
     for (let i = 0, len = urls.length; i < len; i++) {
       let content = fs.readFileSync(files[i], 'utf8');
       // Need to override the datetime format for sitemap
-      let conf = {
-        datetime_format: 'YYYY-MM-DD'
-      };
       sitemap.add({
         url: (config.prefix_url || '') + urls[i],
         changefreq: 'hourly',
@@ -33,6 +34,14 @@ function route_sitemap(csystem) {
         lastmod: utils.getLastModified(conf, contentProcessors.processMeta(content), files[i])
       });
     }
+
+    let content = fs.readFileSync(files[0], 'utf8');
+    sitemap.add({
+      url: (config.prefix_url || '') + 'robots.txt',
+      changefreq: 'hourly',
+      priority: 0.8,
+      lastmod: utils.getLastModified(conf, contentProcessors.processMeta(content), files[0])
+    });
 
     res.header('Content-Type', 'application/xml');
     res.send(sitemap.toString());

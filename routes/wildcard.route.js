@@ -80,7 +80,6 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         return elem === rqPathWithoutLeadingSlash
       })
       if (rqPathWithoutLeadingSlash === '') pathIndex = 0;
-      console.log('path index...', pathIndex)
       if (pathIndex < 0) {
         return next();
       }
@@ -279,7 +278,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       }
 
       let breadCrumbs = createBreadCrumbs(slug, urls)
-       layout = `${renderRoot}${renderRoot !== '' ? '/' : ''}${layout}`,
+       layout = `${renderRoot}${renderRoot !== '' ? '/' : ''}${layout}`
       //   console.log("...", renderRoot, render, layout)
       // console.log(renderRoot, render, layout)
       // console.log(renderRoot, render, layout)
@@ -288,6 +287,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       /**
        * The res.render() function is used to render a view and sends the rendered HTML string to the client.
        */
+      // console.log({navSlugs})
       let hostname = csystem.config.domain || req.headers.host;
       let url = `${config.scheme}://${hostname}/${rqPathWithoutLeadingSlash}`
       return res.status(meta.response_code).render(`${renderRoot}${renderRoot !== '' ? '/' : ''}${render}`, {
