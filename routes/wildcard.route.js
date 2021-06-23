@@ -328,6 +328,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
      console.log("...", renderRoot, render, layout)
      console.log(renderRoot, render, layout)
      console.log(renderRoot, render, layout)
+     content = content.split('%7B%7B%7Bcself%7D%7D%7D').join(``); // backward compartibility
       // console.log(breadCrumbs)
       /**
        * The res.render() function is used to render a view and sends the rendered HTML string to the client.

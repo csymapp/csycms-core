@@ -43,6 +43,7 @@ class Csystem {
         if (!paths) {
             paths = this.pathsNoLeadingSlashNorNumber(this.sortedFilesPaths)
         }
+        paths[0] = paths[0].replace(/[^\/]+/,'')
         return paths.map(file => file.replace(/\.md$/, '').replace(/\/chapter/, '').replace(/\/docs/, ''))
     }
 
