@@ -72,10 +72,16 @@ class Csystem {
          * '/var/www/html/csycms/SITE1/content/01.basics/02.Requirements/docs.md',..]
          */
 
+        // console.log(files)
         files = _.filter(files, (file) => {
             // remove csycmsdocs if documentation is disabled.
             let allowCsycmsDocs = this.config.documentation
             return file.match(/\.md$/) && (allowCsycmsDocs ? true : !file.includes(csycmsdocsDir));
+        });
+        
+        // remove wrongly named files
+        files = _.filter(files, (file) => {
+            return file.match(/\/docs\.md$/) || file.match(/\/chapter\.md$/);
         });
 
         let sortedFilesPaths = files.map(file => file.replace(content_dir, '').replace(/docs\.md$/, `00.docs`).replace(/chapter\.md$/, `00.chapter`)).sort();

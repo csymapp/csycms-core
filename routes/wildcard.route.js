@@ -81,39 +81,29 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       })
       if (rqPathWithoutLeadingSlash === '') pathIndex = 0;
       if (pathIndex < 0) {
-       // console.log('qqqqqqqqqqqqqqq')
-       // console.log('qqqqqqqqqqqqqqq')
-       // console.log('qqqqqqqqqqqqqqq')
-       // console.log(req.path)
-       // console.log(req.params)
-       // console.log('qqqqqqqqqqqqqqq')
         return next();
       }
       slug = urls[pathIndex]
-     // console.log('==============>', { pathIndex, slug, path: req.path, params: req.params, query: req.query })
+
+      // console.log('==============>', { pathIndex, slug, path: req.path, params: req.params, query: req.query })
 
       /** add navigation for next and previous */
       let navSlugs = {}
       if (pathIndex === 0) navSlugs = {
-        next: encodeURI('/'+urls[pathIndex + 1])
+        next: encodeURI('/' + urls[pathIndex + 1])
       }
       else {
         // if(pathIndex === reffilePaths.length - 1)navSlugs = {prev:encodeURI(filePaths[pathIndex-1])}
         if (pathIndex === urls.length - 1) navSlugs = {
-          prev: encodeURI('/'+(urls[pathIndex - 1]))
+          prev: encodeURI('/' + (urls[pathIndex - 1]))
         }
         // else navSlugs = {prev:filePaths[pathIndex-1], next:encodeURI(filePaths[pathIndex+1])}
-        else{
-         // console.log('setting NEXT')
-         // console.log('setting NEXT')
-         // console.log('setting NEXT')
-         // console.log('setting NEXT')
-         // console.log('setting NEXT', urls)
-         navSlugs = {
-         
-          prev: encodeURI('/'+urls[pathIndex - 1]),
-          next: encodeURI('/'+(urls[pathIndex + 1]))
-        }
+        else {
+          navSlugs = {
+
+            prev: encodeURI('/' + urls[pathIndex - 1]),
+            next: encodeURI('/' + (urls[pathIndex + 1]))
+          }
         }
       }
 
@@ -132,54 +122,11 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         delete navSlugs.prev
         // }
       }
-     // console.log({ navSlugs })
 
-     // console.log({ preMeta })
-
-      // try {
-      //   let originalFilePaths = reffilePaths["original"]
-      //   let filePaths = reffilePaths["modified"]
-      //   // let originalFilePaths = reffilePaths["original"]
-      //   // let filePaths = reffilePaths["modified"]
-      //   let nestedPages = reffilePaths["nestedPages"]
-      //   let pathIndex = filePaths.findIndex(function (elem) {
-      //     return elem === slug
-      //   })
-      // } catch (error) {
-      //   console.log(error)
-      //   // console.log(files)
-      // }
-
-      // slug = originalFilePaths[pathIndex]
-      // console.log('----{{{{{{{{{{{{{{{{{{{{{{{')
-      // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-      // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-
-      // if(pathIndex === 0) navSlugs = {next:encodeURI(filePaths[pathIndex+1])}
-
-
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-     // console.log('{{{{{{{{{{{{{{{{{{{{{{{')
-
-      // console.log(files)
       /** check different functions for processing error pages... */
       let file_path = files[pathIndex] //  ||  path.normalize(config.content_dir + slug);;
       // let file_path = path.normalize(config.content_dir + slug);
-     // console.log(file_path)
+      // console.log(file_path)
 
       /** No idea at all now why these lines 
       file_path = file_path.replace(/\/00\./g, '/')
@@ -188,7 +135,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         file_path = file_path.slice(0, -suffix.length - 1);
       }
       */
-     // console.log(slug)
+      // console.log(slug)
       let content;
       let meta = { metadata: {} }
       try {
@@ -199,11 +146,13 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         if (!meta.title) {
           meta.title = contentProcessors.slugToTitle(file_path);
         }
-       // console.log(meta)
+        // console.log(meta)
         content = contentProcessors.stripMeta(content);
         content = contentProcessors.processVars(content, config);
       } catch (error) { }
       // console.log(content)
+
+      // console.log({ slug, navSlugs })
 
 
       /**
@@ -229,27 +178,27 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         content = md.render(content)
       } catch (error) { }
 
-     let layout, theme = config.theme_name, renderRoot = ''
+      let layout, theme = config.theme_name, renderRoot = ''
       if (meta.theme) {
-        if(typeof meta.theme === 'string'){ // system theme
+        if (typeof meta.theme === 'string') { // system theme
           theme = meta.theme
           renderRoot = `${theme}/templates`
-        }else{
-          try{
-            if(meta.theme.system){
+        } else {
+          try {
+            if (meta.theme.system) {
               theme = meta.theme.system
               renderRoot = `${theme}/templates`
-            }else{
+            } else {
               theme = meta.theme.local
               renderRoot = `${theme}`
             }
-          }catch(error){}
+          } catch (error) { }
         }
         theme = meta.theme
       }
       layout = 'layout'
       if (meta.theme) {
-          layout = meta.layout
+        layout = meta.layout
       }
       // render = 'render'
 
@@ -278,18 +227,21 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         })
 
         let _file_path = files[slugIndex]
-        let _content = fs.readFileSync(_file_path, 'utf8');
+        let _content
+        try {
+          _content = fs.readFileSync(_file_path, 'utf8');
+        } catch (error) {
+          return false
+        }
         let _meta = contentProcessors.processMeta(_content);
         return _meta.title
       }
+
 
       const createBreadCrumbs = (slug, pages) => {
         let breadCrumbTitles = []
         let breadCrumbSlugs = []
         let parts = slug.split('/')
-        // console.log(parts)
-        // // parts = parts.slice(1)
-        // console.log(parts)
         for (let i in parts) {
           let tmpParts = [...parts];
           tmpParts = tmpParts.reverse().slice(tmpParts.length - i - 1)
@@ -297,8 +249,10 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
           tmpParts = '/' + tmpParts.join('/')
           let tmpSlug = tmpParts
           let title = getTitle(tmpSlug)
-          breadCrumbTitles.push(title)
-          breadCrumbSlugs.push(tmpSlug)
+          if (false != title) {
+            breadCrumbTitles.push(title)
+            breadCrumbSlugs.push(tmpSlug)
+          }
         }
         breadCrumbTitles.reverse()
         breadCrumbSlugs.reverse()
@@ -324,18 +278,18 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
       }
 
       let breadCrumbs = createBreadCrumbs(slug, urls)
-      layout = `${renderRoot}${renderRoot!==''?'/':''}${layout}`,
-     console.log("...", renderRoot, render, layout)
-     console.log(renderRoot, render, layout)
-     console.log(renderRoot, render, layout)
-     content = content.split('%7B%7B%7Bcself%7D%7D%7D').join(``); // backward compartibility
+       layout = `${renderRoot}${renderRoot !== '' ? '/' : ''}${layout}`,
+      //   console.log("...", renderRoot, render, layout)
+      // console.log(renderRoot, render, layout)
+      // console.log(renderRoot, render, layout)
+      content = content.split('%7B%7B%7Bcself%7D%7D%7D').join(``); // backward compartibility
       // console.log(breadCrumbs)
       /**
        * The res.render() function is used to render a view and sends the rendered HTML string to the client.
        */
       let hostname = csystem.config.domain || req.headers.host;
       let url = `${config.scheme}://${hostname}/${rqPathWithoutLeadingSlash}`
-      return res.status(meta.response_code).render(`${renderRoot}${renderRoot!==''?'/':''}${render}`, {
+      return res.status(meta.response_code).render(`${renderRoot}${renderRoot !== '' ? '/' : ''}${render}`, {
         config: config,
         pages: {},
         meta: meta,
@@ -368,7 +322,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
 
 
 
-     
+
     } catch (error) {
     }
 
