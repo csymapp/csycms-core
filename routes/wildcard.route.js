@@ -80,6 +80,7 @@ function route_wildcard(csystem/*config, reffilePaths*/) {
         return elem === rqPathWithoutLeadingSlash
       })
       if (rqPathWithoutLeadingSlash === '') pathIndex = 0;
+      console.log('path index...', pathIndex)
       if (pathIndex < 0) {
         return next();
       }

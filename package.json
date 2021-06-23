@@ -118,7 +118,7 @@
   "name": "csycms-core",
   "repository": {
     "type": "git",
-    "url": "https://github.com/csymapp/csycms-core.git"
+    "url": "git+https://github.com/csymapp/csycms-core.git"
   },
   "scripts": {
     "dev": "DEBUG=CSYCMS nodemon bin/app.js $*",
@@ -127,5 +127,5 @@
     "start": "DEBUG=CSYCMS node bin/app.js $*",
     "test": "mocha"
   },
-  "version": "1.0.14"
+  "version": "1.0.15"
 }

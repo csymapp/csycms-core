@@ -19,7 +19,7 @@ const Csystem = require(__dirname + '/core/csystem')
 const appRoot = require('app-root-path');
 const swaggerUi = require('swagger-ui-express');
 const cors = require('cors')
-const  useragent = require('express-useragent');
+const useragent = require('express-useragent');
 // const base_dir = appRoot.path
 // const yargs = require("yargs")
 // const argv = yargs.argv
@@ -249,11 +249,9 @@ function initialize(config) {
      * must come after all other paths
      * Ref: https://stackoverflow.com/questions/899422/regular-expression-for-a-string-that-does-not-start-with-a-sequence
      */
-    app.use(/^(?!\/api)([^.]*)/, route_wildcard);
 
     let routesDir = csycmsApi.routesDir()
     fse
-      // .readdirSync(__dirname+"/../routes")
       .readdirSync(routesDir)
       .forEach((folda) => {
         let routeFilePath = path.join(routesDir, folda)
@@ -263,12 +261,7 @@ function initialize(config) {
             // all js files in folder
             file.split(".")[file.split(".").length - 1] === "js"//, console.log('=============>>>>>>>>>>>>>?????==')
           )
-          // .filter((file) =>
-          //   // all js files in folder
-          //   console.log('===============')
-          // )
           .forEach((file) => {
-            console.log(routeFilePath, file)
             let routename = file.split(".")[0];
             console.log("%s %s %s", chalk.green('✓'), chalk.green('✓'), routename);
             routeFilePath = path.join(routeFilePath, file);
@@ -279,6 +272,7 @@ function initialize(config) {
 
 
       })
+    app.use(/^(?!\/api)([^.]*)/, route_wildcard);
   }
   // app.use(/^([^.]*)/, route_wildcard);
   // router.get(/^([^.]*)/, route_wildcard);
@@ -295,7 +289,7 @@ function initialize(config) {
   app.use(config.prefix_url || '/', router);
 
   app.get('*', (req, res, next) => {
-    next('unknown error')
+    next({code:404, message: "Missing page"})
   })
   app.use(error_handler);
 
