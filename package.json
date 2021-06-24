@@ -114,7 +114,7 @@
       "url": "https://raw.githubusercontent.com/csymapp/csycms-core/master/LICENSE"
     }
   ],
-  "main": "./app/index.js",
+  "main": "index.js",
   "name": "csycms-core",
   "repository": {
     "type": "git",
@@ -127,5 +127,5 @@
     "start": "DEBUG=CSYCMS node bin/app.js $*",
     "test": "mocha"
   },
-  "version": "1.0.16"
+  "version": "1.0.17"
 }
